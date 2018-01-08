@@ -4,15 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtils {
-	
+
     private final static long minute = 60 * 1000;// 1分钟
     private final static long hour = 60 * minute;// 1小时
     private final static long day = 24 * hour;// 1天
     private final static long month = 31 * day;// 月
     private final static long year = 12 * month;// 年
-	
-	public final static String YYYYMMDDHHMMSS = "yyyyMMddHHmmssSSS";
-	
+
+    public final static String YYYYMMDDHHMMSS = "yyyyMMddHHmmssSSS";
+
     /**
      * @return
      * @author neo
@@ -23,16 +23,16 @@ public class DateUtils {
     }
 
 
-	/**
-	 * @author neo
-	 * @date 2016年8月10日
-	 * @return
-	 */
-	public static long getCurrentTime() {
-		return System.currentTimeMillis();
-	}
-	
-	
+    /**
+     * @return
+     * @author neo
+     * @date 2016年8月10日
+     */
+    public static long getCurrentTime() {
+        return System.currentTimeMillis();
+    }
+
+
     public static String getTimeFormatText(Long date) {
         if (date == null) {
             return null;
@@ -64,6 +64,7 @@ public class DateUtils {
 
     /**
      * 将时间戳转换成当天0点
+     *
      * @param timestamp
      * @return
      */
@@ -82,10 +83,11 @@ public class DateUtils {
 
     /**
      * 获取一个月之前的时间戳
+     *
      * @return
      */
     public static long getLastMonthTime() {
-        return getDayBegin(getCurrentTime())-86400000l*30;
+        return getDayBegin(getCurrentTime()) - 86400000l * 30;
     }
 
 }

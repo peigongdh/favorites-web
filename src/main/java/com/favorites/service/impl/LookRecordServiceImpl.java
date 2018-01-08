@@ -37,11 +37,9 @@ public class LookRecordServiceImpl implements LookRecordService {
     private CollectService collectService;
 
 
-
-
     @Override
-    public void saveLookRecord(Long userId,Long collectId) {
-        if(userId != null && userId > 0 && collectId != null) {
+    public void saveLookRecord(Long userId, Long collectId) {
+        if (userId != null && userId > 0 && collectId != null) {
             Integer count = lookRecordRepository.countByUserIdAndCollectId(userId, collectId);
             if (count > 0) {
                 lookRecordRepository.updatelastModifyTime(userId, collectId, DateUtils.getCurrentTime());
@@ -59,7 +57,7 @@ public class LookRecordServiceImpl implements LookRecordService {
 
     @Override
     public void deleteLookRecord(Long userId, Long collectId) {
-        lookRecordRepository.deleteByUserIdAndCollectId(userId,collectId);
+        lookRecordRepository.deleteByUserIdAndCollectId(userId, collectId);
     }
 
     @Override
@@ -73,24 +71,24 @@ public class LookRecordServiceImpl implements LookRecordService {
 
         views = lookRecordRepository.findViewByUserId(userId, pageable);
 
-        return convertCollect(views,userId);
+        return convertCollect(views, userId);
     }
 
     /**
+     * @return
      * @author neo
      * @date 2016年8月11日
-     * @return
      */
-    private List<CollectSummary> convertCollect(Page<CollectView> views,Long userId) {
-        List<CollectSummary> summarys=new ArrayList<CollectSummary>();
+    private List<CollectSummary> convertCollect(Page<CollectView> views, Long userId) {
+        List<CollectSummary> summarys = new ArrayList<CollectSummary>();
         for (CollectView view : views) {
-            CollectSummary summary=new CollectSummary(view);
+            CollectSummary summary = new CollectSummary(view);
             summary.setPraiseCount(praiseRepository.countByCollectId(view.getId()));
             summary.setCommentCount(commentRepository.countByCollectId(view.getId()));
-            Praise praise=praiseRepository.findByUserIdAndCollectId(userId, view.getId());
-            if(praise!=null){
+            Praise praise = praiseRepository.findByUserIdAndCollectId(userId, view.getId());
+            if (praise != null) {
                 summary.setPraise(true);
-            }else{
+            } else {
                 summary.setPraise(false);
             }
             summary.setCollectTime(DateUtils.getTimeFormatText(view.getCreateTime()));

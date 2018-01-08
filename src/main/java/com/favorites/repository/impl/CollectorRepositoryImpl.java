@@ -19,18 +19,20 @@ public class CollectorRepositoryImpl extends BaseNativeSqlRepository implements 
 
     /**
      * 收藏文章最多的用户
+     *
      * @return
      */
     @Override
     public Long getMostCollectUser() {
         String querySql = "SELECT c.user_id ,COUNT(1) AS counts FROM collect c WHERE type='PUBLIC' AND is_delete='NO' GROUP BY c.user_id ORDER BY counts DESC LIMIT 1";
         List<Object[]> objecArraytList = sqlArrayList(querySql);
-        Object[] obj =  objecArraytList.get(0);
+        Object[] obj = objecArraytList.get(0);
         return Long.valueOf(obj[0].toString());
     }
 
     /**
      * 被关注最多的用户
+     *
      * @param notUserId
      * @return
      */
@@ -40,13 +42,14 @@ public class CollectorRepositoryImpl extends BaseNativeSqlRepository implements 
                 "WHERE status='FOLLOW' and follow_id != " + notUserId +
                 " GROUP BY follow_id ORDER BY counts DESC LIMIT 1";
         CollectorView cv = new CollectorView();
-        List<CollectorView> list = sqlObjectList(querySql,cv);
+        List<CollectorView> list = sqlObjectList(querySql, cv);
         Long userId = list.get(0).getUserId();
-        return  userId;
+        return userId;
     }
 
     /**
      * 文章被赞最多的用户
+     *
      * @param notUserIds
      * @return
      */
@@ -54,31 +57,33 @@ public class CollectorRepositoryImpl extends BaseNativeSqlRepository implements 
     public Long getMostPraisedUser(String notUserIds) {
         String querySql = "SELECT c.user_id,SUM(p.counts) as counts FROM collect c LEFT JOIN \n" +
                 "(SELECT collect_id,COUNT(1) as counts FROM praise GROUP BY collect_id)p \n" +
-                "ON c.id=p.collect_id WHERE c.type='PUBLIC' AND c.is_delete='NO' AND c.user_id NOT IN (" + notUserIds +") \n" +
+                "ON c.id=p.collect_id WHERE c.type='PUBLIC' AND c.is_delete='NO' AND c.user_id NOT IN (" + notUserIds + ") \n" +
                 "GROUP BY c.user_id ORDER BY counts DESC LIMIT 1";
         List<Object[]> objecArraytList = sqlArrayList(querySql);
-        Object[] obj =  objecArraytList.get(0);
+        Object[] obj = objecArraytList.get(0);
         return Long.valueOf(obj[0].toString());
     }
 
     /**
      * 文章被评论最多的用户
+     *
      * @param notUserIds
      * @return
      */
     @Override
     public Long getMostCommentedUser(String notUserIds) {
-        String querySql="SELECT c.user_id,SUM(p.counts) as counts FROM collect c LEFT JOIN \n" +
+        String querySql = "SELECT c.user_id,SUM(p.counts) as counts FROM collect c LEFT JOIN \n" +
                 "(SELECT collect_id,COUNT(1) as counts FROM `comment` GROUP BY collect_id)p \n" +
-                "ON c.id=p.collect_id WHERE c.type='PUBLIC' AND c.is_delete='NO' AND c.user_id NOT IN (" + notUserIds +") \n" +
+                "ON c.id=p.collect_id WHERE c.type='PUBLIC' AND c.is_delete='NO' AND c.user_id NOT IN (" + notUserIds + ") \n" +
                 "GROUP BY c.user_id ORDER BY counts DESC LIMIT 1";
         List<Object[]> objecArraytList = sqlArrayList(querySql);
-        Object[] obj =  objecArraytList.get(0);
+        Object[] obj = objecArraytList.get(0);
         return Long.valueOf(obj[0].toString());
     }
 
     /**
      * 最受欢迎的用户
+     *
      * @param notUserIds
      * @return
      */
@@ -91,12 +96,13 @@ public class CollectorRepositoryImpl extends BaseNativeSqlRepository implements 
                 "WHERE u.user_id NOT IN (" + notUserIds + ")\n" +
                 "GROUP BY u.user_id ORDER BY counts DESC LIMIT 1";
         List<Object[]> objecArraytList = sqlArrayList(querySql);
-        Object[] obj =  objecArraytList.get(0);
+        Object[] obj = objecArraytList.get(0);
         return Long.valueOf(obj[0].toString());
     }
 
     /**
      * 近一个月最活跃用户
+     *
      * @param notUserIds
      * @return
      */
@@ -115,7 +121,7 @@ public class CollectorRepositoryImpl extends BaseNativeSqlRepository implements 
                 "WHERE u.user_id NOT IN (" + notUserIds + ")\n" +
                 "GROUP BY u.user_id ORDER BY counts DESC LIMIT 1";
         List<Object[]> objecArraytList = sqlArrayList(querySql);
-        Object[] obj =  objecArraytList.get(0);
+        Object[] obj = objecArraytList.get(0);
         return Long.valueOf(obj[0].toString());
     }
 }

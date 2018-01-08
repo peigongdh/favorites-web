@@ -17,9 +17,9 @@ public class CollectorView {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(name="userId",length=20)
+    @Column(name = "userId", length = 20)
     private Long userId;
-    @Column(name="counts",length=20)
+    @Column(name = "counts", length = 20)
     private Long counts;
 
     public Long getId() {

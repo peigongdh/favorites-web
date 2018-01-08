@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by chenzhimin on 2017/1/19.
  */
 @Entity
-public class UserIsFollow implements Serializable{
+public class UserIsFollow implements Serializable {
     @Id
     private Long id;
     private String userName;

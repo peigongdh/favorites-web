@@ -24,7 +24,7 @@ import java.util.List;
  * Created by DingYS on 2017/3/8.
  */
 @Service
-public class LetterServiceImpl implements LetterService{
+public class LetterServiceImpl implements LetterService {
 
     @Autowired
     private LetterRepository letterRepository;
@@ -35,46 +35,48 @@ public class LetterServiceImpl implements LetterService{
 
     /**
      * 发送私信
+     *
      * @param letter
      */
-    public void sendLetter(Letter letter){
-        if("original".equals(letter.getSendType())){
+    public void sendLetter(Letter letter) {
+        if ("original".equals(letter.getSendType())) {
             letter.setType(LetterType.ORIGINAL);
-        }else{
+        } else {
             letter.setType(LetterType.REPLY);
             List<String> userNameList = StringUtil.getAtUser(letter.getContent());
-            if(null != userNameList && userNameList.size() > 0){
+            if (null != userNameList && userNameList.size() > 0) {
                 User receiveUser = userRepository.findByUserName(userNameList.get(0));
-                if(null != receiveUser){
+                if (null != receiveUser) {
                     letter.setReceiveUserId(receiveUser.getId());
                 }
-                String content = letter.getContent().substring(0,letter.getContent().indexOf("@"));
-                if(StringUtils.isBlank(content)){
-                    content = letter.getContent().substring(letter.getContent().indexOf("@")+receiveUser.getUserName().length()+1,letter.getContent().length());
+                String content = letter.getContent().substring(0, letter.getContent().indexOf("@"));
+                if (StringUtils.isBlank(content)) {
+                    content = letter.getContent().substring(letter.getContent().indexOf("@") + receiveUser.getUserName().length() + 1, letter.getContent().length());
                     letter.setContent(content);
                 }
             }
         }
         letter.setCreateTime(DateUtils.getCurrentTime());
         letterRepository.save(letter);
-        if(null == letter.getPid()){
+        if (null == letter.getPid()) {
             letter.setPid(letter.getId());
-            letterRepository.updatePidById(letter.getId(),letter.getId());
+            letterRepository.updatePidById(letter.getId(), letter.getId());
         }
         // 添加消息通知
-        noticeService.saveNotice(null,"letter",letter.getReceiveUserId(),String.valueOf(letter.getId()));
+        noticeService.saveNotice(null, "letter", letter.getReceiveUserId(), String.valueOf(letter.getId()));
     }
 
     /**
      * 私信信息查询
+     *
      * @param userId
      * @param pageable
      * @return
      */
-    public List<LetterSummary> findLetter(Long userId, Pageable pageable){
-        List<LetterView> viewList = letterRepository.findLetterByReceiveUserId(userId,pageable);
+    public List<LetterSummary> findLetter(Long userId, Pageable pageable) {
+        List<LetterView> viewList = letterRepository.findLetterByReceiveUserId(userId, pageable);
         List<LetterSummary> summaryList = new ArrayList<LetterSummary>();
-        for(LetterView view : viewList){
+        for (LetterView view : viewList) {
             LetterSummary summary = new LetterSummary(view);
             summaryList.add(summary);
         }

@@ -10,23 +10,23 @@ import com.favorites.domain.Config;
 
 public interface ConfigRepository extends JpaRepository<Config, Long> {
 
-	Config findByUserId(Long userId);
-	
-	Config findByUserIdAndDefaultFavorties(Long userId,String defaultFavorites);
-	
-	@Transactional
-	@Modifying
-	@Query("update Config set defaultCollectType=?2,lastModifyTime =?3 where id = ?1")
-	int updateCollectTypeById(Long id,String value,Long lastModifyTime);
-	
-	@Transactional
-	@Modifying
-	@Query("update Config set defaultModel=?2,lastModifyTime =?3 where id = ?1")
-	int updateModelTypeById(Long id,String value,Long lastModifyTime);
-	
-	@Transactional
-	@Modifying
-	@Query("update Config set defaultFavorties=?2,lastModifyTime =?3 where id = ?1")
-	int updateFavoritesById(Long id,String value,Long lastModifyTime);
-	
+    Config findByUserId(Long userId);
+
+    Config findByUserIdAndDefaultFavorties(Long userId, String defaultFavorites);
+
+    @Transactional
+    @Modifying
+    @Query("update Config set defaultCollectType=?2,lastModifyTime =?3 where id = ?1")
+    int updateCollectTypeById(Long id, String value, Long lastModifyTime);
+
+    @Transactional
+    @Modifying
+    @Query("update Config set defaultModel=?2,lastModifyTime =?3 where id = ?1")
+    int updateModelTypeById(Long id, String value, Long lastModifyTime);
+
+    @Transactional
+    @Modifying
+    @Query("update Config set defaultFavorties=?2,lastModifyTime =?3 where id = ?1")
+    int updateFavoritesById(Long id, String value, Long lastModifyTime);
+
 }

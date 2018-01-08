@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface UrlLibraryRepository extends JpaRepository<UrlLibrary, Long> {
 
-    List<UrlLibrary> findByCountLessThanAndLogoUrl(int count,String str);
+    List<UrlLibrary> findByCountLessThanAndLogoUrl(int count, String str);
 
     @Transactional
     @Modifying
@@ -21,6 +21,6 @@ public interface UrlLibraryRepository extends JpaRepository<UrlLibrary, Long> {
     @Transactional
     @Modifying
     @Query("update UrlLibrary u set u.logoUrl = ?2 where u.id = ?1")
-    int updateLogoUrlById(Long id,String logoUrl);
+    int updateLogoUrlById(Long id, String logoUrl);
 
 }

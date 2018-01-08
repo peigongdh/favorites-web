@@ -12,41 +12,41 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/lookRecord")
-public class LookRecordController extends BaseController{
+public class LookRecordController extends BaseController {
 
     @Autowired
     private LookRecordService lookRecordService;
 
     /**
-     * @author chenzhimin
-     * @date 2017年1月23日
      * @param collectId 收藏ID
      * @return
+     * @author chenzhimin
+     * @date 2017年1月23日
      */
-    @RequestMapping(value="/save/{collectId}")
+    @RequestMapping(value = "/save/{collectId}")
     public Response saveLookRecord(@PathVariable("collectId") long collectId) {
-        lookRecordService.saveLookRecord(this.getUserId(),collectId);
+        lookRecordService.saveLookRecord(this.getUserId(), collectId);
         return result();
     }
 
     /**
-     * @author chenzhimin
-     * @date 2017年1月23日
      * @param collectId 收藏ID
      * @return
+     * @author chenzhimin
+     * @date 2017年1月23日
      */
-    @RequestMapping(value="/delete/{collectId}")
+    @RequestMapping(value = "/delete/{collectId}")
     public Response deleteLookRecord(@PathVariable("collectId") long collectId) {
-        lookRecordService.deleteLookRecord(this.getUserId(),collectId);
+        lookRecordService.deleteLookRecord(this.getUserId(), collectId);
         return result();
     }
 
     /**
+     * @return
      * @author chenzhimin
      * @date 2017年1月23日
-     * @return
      */
-    @RequestMapping(value="/deleteAll")
+    @RequestMapping(value = "/deleteAll")
     public Response deleteAll() {
         lookRecordService.deleteLookRecordByUserID(this.getUserId());
         return result();

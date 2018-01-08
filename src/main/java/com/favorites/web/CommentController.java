@@ -23,106 +23,107 @@ import com.favorites.utils.StringUtil;
 
 @RestController
 @RequestMapping("/comment")
-public class CommentController extends BaseController{
-	
-	@Autowired
-	private  CommentRepository CommentRepository;
-	@Autowired
-	private UserRepository userRepository;
-	@Resource
-	private NoticeService noticeService;
-	@Autowired
-	private CollectRepository colloectRepository;
-	
-	
-	/**
-	 * @author neo
-	 * @date 2016年8月26日
-	 * @param comment
-	 * @return
-	 */
-	@RequestMapping(value="/add")
-	public Response add(Comment comment) {
-		User user = null;
-		if (comment.getContent().indexOf("@") > -1) {
-			List<String> atUsers = StringUtil.getAtUser(comment.getContent());
-			if(atUsers!=null && atUsers.size()>0){
-				user = userRepository.findByUserName(atUsers.get(0));
-				if (null != user) {
-					comment.setReplyUserId(user.getId());
-				} else {
-					logger.info("为找到匹配：" + atUsers.get(0) + "的用户.");
-				}
-				String content=comment.getContent().substring(0,comment.getContent().indexOf("@"));
-				if(StringUtils.isBlank(content)){
-					content=comment.getContent().substring(comment.getContent().indexOf("@")+user.getUserName().length()+1,comment.getContent().length());
-				}
-				comment.setContent(content);
-			}
-		}
-		comment.setUserId(getUserId());
-		comment.setCreateTime(DateUtils.getCurrentTime());
-		CommentRepository.save(comment);
-		if(null != user){
-			// 保存消息通知(回复)
-			noticeService.saveNotice(String.valueOf(comment.getCollectId()), "comment", user.getId(), String.valueOf(comment.getId()));
-		}else{
-			// 保存消息通知（直接评论）
-			Collect collect = colloectRepository.findOne(comment.getCollectId());
-			if(null != collect){
-				noticeService.saveNotice(String.valueOf(comment.getCollectId()), "comment", collect.getUserId(), String.valueOf(comment.getId()));
-			}
-		}
-		
-		return result();
-	}
-	
-	
-	/**
-	 * @author neo
-	 * @date 2016年8月26日
-	 * @param collectId
-	 * @return
-	 */
-	@RequestMapping(value="/list/{collectId}")
-	public List<Comment> list(@PathVariable("collectId") long collectId) {
-		List<Comment> comments= CommentRepository.findByCollectIdOrderByIdDesc(collectId);
-		return convertComment(comments);
-	}
-	
-	
-	/**
-	 * @author neo
-	 * @date 2016年8月26日
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value="/delete/{id}")
-	public Response delete(@PathVariable("id") long id) {
-		CommentRepository.deleteById(id);
-		return result();
-	}
+public class CommentController extends BaseController {
 
-	
-	/**
-	 * 转化时间和用户名
-	 * @author neo
-	 * @date 2016年8月26日
-	 * @param comments
-	 * @return
-	 */
-	private List<Comment> convertComment(List<Comment> comments) {
-		for (Comment comment : comments) {
-			User user = userRepository.findOne(comment.getUserId());
-			comment.setCommentTime(DateUtils.getTimeFormatText(comment.getCreateTime()));
-			comment.setUserName(user.getUserName());
-			comment.setProfilePicture(user.getProfilePicture());
-			if(comment.getReplyUserId()!=null){
-		     User replyUser = userRepository.findOne(comment.getReplyUserId());
-		     comment.setReplyUserName(replyUser.getUserName());
-			}
-		}
-		return comments;
-	}
-	
+    @Autowired
+    private CommentRepository CommentRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Resource
+    private NoticeService noticeService;
+    @Autowired
+    private CollectRepository colloectRepository;
+
+
+    /**
+     * @param comment
+     * @return
+     * @author neo
+     * @date 2016年8月26日
+     */
+    @RequestMapping(value = "/add")
+    public Response add(Comment comment) {
+        User user = null;
+        if (comment.getContent().indexOf("@") > -1) {
+            List<String> atUsers = StringUtil.getAtUser(comment.getContent());
+            if (atUsers != null && atUsers.size() > 0) {
+                user = userRepository.findByUserName(atUsers.get(0));
+                if (null != user) {
+                    comment.setReplyUserId(user.getId());
+                } else {
+                    logger.info("为找到匹配：" + atUsers.get(0) + "的用户.");
+                }
+                String content = comment.getContent().substring(0, comment.getContent().indexOf("@"));
+                if (StringUtils.isBlank(content)) {
+                    content = comment.getContent().substring(comment.getContent().indexOf("@") + user.getUserName().length() + 1, comment.getContent().length());
+                }
+                comment.setContent(content);
+            }
+        }
+        comment.setUserId(getUserId());
+        comment.setCreateTime(DateUtils.getCurrentTime());
+        CommentRepository.save(comment);
+        if (null != user) {
+            // 保存消息通知(回复)
+            noticeService.saveNotice(String.valueOf(comment.getCollectId()), "comment", user.getId(), String.valueOf(comment.getId()));
+        } else {
+            // 保存消息通知（直接评论）
+            Collect collect = colloectRepository.findOne(comment.getCollectId());
+            if (null != collect) {
+                noticeService.saveNotice(String.valueOf(comment.getCollectId()), "comment", collect.getUserId(), String.valueOf(comment.getId()));
+            }
+        }
+
+        return result();
+    }
+
+
+    /**
+     * @param collectId
+     * @return
+     * @author neo
+     * @date 2016年8月26日
+     */
+    @RequestMapping(value = "/list/{collectId}")
+    public List<Comment> list(@PathVariable("collectId") long collectId) {
+        List<Comment> comments = CommentRepository.findByCollectIdOrderByIdDesc(collectId);
+        return convertComment(comments);
+    }
+
+
+    /**
+     * @param id
+     * @return
+     * @author neo
+     * @date 2016年8月26日
+     */
+    @RequestMapping(value = "/delete/{id}")
+    public Response delete(@PathVariable("id") long id) {
+        CommentRepository.deleteById(id);
+        return result();
+    }
+
+
+    /**
+     * 转化时间和用户名
+     *
+     * @param comments
+     * @return
+     * @author neo
+     * @date 2016年8月26日
+     */
+    private List<Comment> convertComment(List<Comment> comments) {
+        for (Comment comment : comments) {
+            User user = userRepository.findOne(comment.getUserId());
+            comment.setCommentTime(DateUtils.getTimeFormatText(comment.getCreateTime()));
+            comment.setUserName(user.getUserName());
+            comment.setProfilePicture(user.getProfilePicture());
+            if (comment.getReplyUserId() != null) {
+                User replyUser = userRepository.findOne(comment.getReplyUserId());
+                comment.setReplyUserName(replyUser.getUserName());
+            }
+        }
+        return comments;
+    }
+
 }

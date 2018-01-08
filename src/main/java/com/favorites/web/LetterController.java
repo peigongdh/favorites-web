@@ -29,17 +29,18 @@ public class LetterController extends BaseController {
 
     /**
      * 发送私信
+     *
      * @param letter
      * @return
      */
     @RequestMapping("/sendLetter")
     @LoggerManage(description = "发送私信")
-    public Response sendLetter(Letter letter){
+    public Response sendLetter(Letter letter) {
         try {
             letter.setSendUserId(getUserId());
             letterService.sendLetter(letter);
-        }catch (Exception e){
-            logger.error("发送私信异常：",e);
+        } catch (Exception e) {
+            logger.error("发送私信异常：", e);
             return result(ExceptionMsg.FAILED);
         }
         return result();
@@ -47,6 +48,7 @@ public class LetterController extends BaseController {
 
     /**
      * 私信列表获取
+     *
      * @param page
      * @param size
      * @return
@@ -54,10 +56,10 @@ public class LetterController extends BaseController {
     @RequestMapping("/getLetterList")
     @LoggerManage(description = "获取私信列表")
     public List<LetterSummary> getLetterList(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                             @RequestParam(value = "size", defaultValue = "15") Integer size){
+                                             @RequestParam(value = "size", defaultValue = "15") Integer size) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(page, size, sort);
-        List<LetterSummary> letterList = letterService.findLetter(getUserId(),pageable);
+        List<LetterSummary> letterList = letterService.findLetter(getUserId(), pageable);
         return letterList;
     }
 }

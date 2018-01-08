@@ -15,7 +15,7 @@ import javax.transaction.Transactional;
  * 浏览记录Repository
  * Created by chenzhimin on 2017/1/5.
  */
-public interface LookRecordRepository  extends JpaRepository<LookRecord, Long> {
+public interface LookRecordRepository extends JpaRepository<LookRecord, Long> {
 
     /**
      * 查询用户浏览历史记录
@@ -26,18 +26,18 @@ public interface LookRecordRepository  extends JpaRepository<LookRecord, Long> {
             + "from LookRecord r,Collect c,User u,Favorites f "
             + "WHERE c.userId = u.id and r.collectId = c.id and c.favoritesId=f.id and c.isDelete='NO'";
 
-    @Query(userLookRecordSql+ " and r.userId=?1")
+    @Query(userLookRecordSql + " and r.userId=?1")
     Page<CollectView> findViewByUserId(Long userId, Pageable pageable);
 
     Integer countByUserIdAndCollectId(Long userId, Long collectId);
 
-    @Modifying(clearAutomatically=true)
+    @Modifying(clearAutomatically = true)
     @Transactional
     @Query("update LookRecord set lastModifyTime=:lastModifyTime where userId=:userId and collectId=:collectId")
     void updatelastModifyTime(@Param("userId") Long userId, @Param("collectId") Long collectId, @Param("lastModifyTime") Long lastModifyTime);
 
     @Transactional
-    Long deleteByUserIdAndCollectId(Long userId,Long collectId);
+    Long deleteByUserIdAndCollectId(Long userId, Long collectId);
 
     @Transactional
     Long deleteByUserId(Long userId);

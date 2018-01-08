@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Created by DingYS on 2016/12/29.
  */
 @Entity
-public class UrlLibrary extends Entitys implements Serializable{
+public class UrlLibrary extends Entitys implements Serializable {
 
     @Id
     @GeneratedValue
@@ -19,7 +19,7 @@ public class UrlLibrary extends Entitys implements Serializable{
     private String url;
     @Column(nullable = true)
     private String logoUrl;
-    @Column(columnDefinition="INT default 0")
+    @Column(columnDefinition = "INT default 0")
     private int count;
 
     public int getCount() {

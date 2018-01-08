@@ -6,9 +6,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class FavoritesApplication extends SpringBootServletInitializer{
-	
-	@Override
+public class FavoritesApplication extends SpringBootServletInitializer {
+
+    @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(FavoritesApplication.class);
     }

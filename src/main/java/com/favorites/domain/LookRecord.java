@@ -7,11 +7,11 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- *  浏览记录entity
+ * 浏览记录entity
  * Created by chenzhimin on 2017/1/5.
  */
 @Entity
-public class LookRecord extends Entitys implements Serializable{
+public class LookRecord extends Entitys implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

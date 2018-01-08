@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by DingYS on 2017/3/8.
  */
-public class LetterSummary implements Serializable{
+public class LetterSummary implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class LetterSummary implements Serializable{
     private Long pid;
     private String type;
 
-    public LetterSummary(LetterView view){
+    public LetterSummary(LetterView view) {
         this.id = view.getId();
         this.sendUserId = view.getSendUserId();
         this.sendUserName = view.getSendUserName();

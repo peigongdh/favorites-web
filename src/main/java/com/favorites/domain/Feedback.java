@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Created by chenzhimin on 2017/2/23.
  */
 @Entity
-public class Feedback  extends Entitys implements Serializable {
+public class Feedback extends Entitys implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

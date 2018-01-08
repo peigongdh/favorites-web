@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/feedback")
-public class FeedbackController extends BaseController{
+public class FeedbackController extends BaseController {
     @Autowired
     private FeedbackService feedbackService;
 
     /**
+     * @return
      * @author chenzhimin
      * @date 2017年1月23日
-     * @return
      */
-    @RequestMapping(value="/save",method = RequestMethod.POST)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Response save(Feedback feedback) {
         try {
-        feedbackService.saveFeeddback(feedback,getUserId());
+            feedbackService.saveFeeddback(feedback, getUserId());
         } catch (Exception e) {
             logger.error("feedback failed, ", e);
             return result(ExceptionMsg.FAILED);
